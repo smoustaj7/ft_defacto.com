@@ -1,0 +1,78 @@
+@import "tailwindcss";
+
+@theme {
+  /* Palette — warm-white ground, ink text, a saturated "signal" accent for
+     CTAs/sale (fast-fashion needs urgency), plus one accent per department. */
+  --color-paper: #ffffff;
+  --color-bone: #eeebe2;
+  --color-ink: #17140f;
+  --color-ink-soft: #514c42;
+  --color-line: #ddd8cc;
+
+  --color-signal: #d2321e;   /* CTA / sale / price emphasis */
+  --color-signal-dark: #a8280f;
+  --color-denim: #2f4a66;    /* men */
+  --color-clay: #a54b3f;     /* women */
+  --color-moss: #445940;     /* kids */
+
+  --font-display: "Arial Narrow", "Helvetica Neue Condensed", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+}
+
+/* Signature element: a tailor's-tape rule used as a section divider,
+   size-selector baseline, and checkout progress track. */
+.tick-rule {
+  position: relative;
+  height: 1px;
+  background: repeating-linear-gradient(
+    to right,
+    var(--color-line) 0,
+    var(--color-line) 1px,
+    transparent 1px,
+    transparent 8px
+  );
+}
+.tick-rule::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to right,
+    var(--color-ink-soft) 0,
+    var(--color-ink-soft) 1px,
+    transparent 1px,
+    transparent 40px
+  );
+  opacity: 0.5;
+}
+
+.display-heading {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  font-weight: 800;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-signal);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
