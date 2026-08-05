@@ -87,7 +87,7 @@ export default function CheckoutPage() {
               value={form.fullName}
               onChange={(e) => setForm({ ...form, fullName: e.target.value })}
               className="w-full border border-line rounded-md px-3 py-2.5 text-sm"
-              placeholder="Souhaib El Amrani"
+              placeholder="Souhaib Moustajib"
             />
           </div>
           <div>
