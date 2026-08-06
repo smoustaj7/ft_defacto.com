@@ -30,6 +30,10 @@ export function AddToCartPanel({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ productId, size, quantity }),
       });
+      if (res.status === 401) {
+        router.push("/login");
+        return;
+      }
       if (!res.ok) throw new Error();
       notifyCartUpdated();
       setStatus("added");

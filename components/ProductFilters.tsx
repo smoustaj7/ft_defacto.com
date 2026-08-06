@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
+import { useTransition } from "react";
 
 const CATEGORIES = [
   { label: "All", value: "" },
@@ -23,6 +24,7 @@ export function ProductFilters({
 }) {
   const router = useRouter();
   const params = useSearchParams();
+  const [isPending, startTransition] = useTransition();
 
   const category = params.get("category") ?? "";
   const subcategory = params.get("subcategory") ?? "";
@@ -36,7 +38,9 @@ export function ProductFilters({
     else next.delete(key);
     // changing department resets the subcategory filter
     if (key === "category") next.delete("subcategory");
-    router.push(`/products?${next.toString()}`);
+    startTransition(() => {
+      router.push(`/products?${next.toString()}`, { scroll: false });
+    });
   }
 
   return (

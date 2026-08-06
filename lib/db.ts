@@ -17,6 +17,14 @@ if (process.env.NODE_ENV !== "production") globalForDb.db = db;
 db.pragma("journal_mode = WAL");
 
 db.exec(`
+CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  full_name TEXT NOT NULL,
+  created_at TEXT DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS products (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   slug TEXT UNIQUE NOT NULL,
@@ -37,6 +45,7 @@ CREATE TABLE IF NOT EXISTS products (
 CREATE TABLE IF NOT EXISTS cart_items (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   session_id TEXT NOT NULL,
+  user_id INTEGER REFERENCES users(id),
   product_id INTEGER NOT NULL REFERENCES products(id),
   size TEXT NOT NULL,
   quantity INTEGER NOT NULL DEFAULT 1,
@@ -46,6 +55,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
 CREATE TABLE IF NOT EXISTS orders (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   session_id TEXT NOT NULL,
+  user_id INTEGER REFERENCES users(id),
   items TEXT NOT NULL,        -- JSON snapshot of purchased items
   subtotal REAL NOT NULL,
   shipping REAL NOT NULL,

@@ -45,12 +45,20 @@ export default async function ConfirmationPage({
         </div>
       </div>
 
-      <Link
-        href="/products"
-        className="inline-block bg-ink text-paper px-6 py-3 rounded-full font-medium hover:bg-ink/90"
-      >
-        Keep shopping
-      </Link>
+      <div className="flex gap-4 justify-center">
+        <Link
+          href="/products"
+          className="inline-block border border-ink text-ink px-6 py-3 rounded-full font-medium hover:bg-bone transition-colors"
+        >
+          Keep shopping
+        </Link>
+        <Link
+          href="/account"
+          className="inline-block bg-ink text-paper px-6 py-3 rounded-full font-medium hover:bg-ink/90 transition-colors"
+        >
+          View your orders
+        </Link>
+      </div>
     </div>
   );
 }

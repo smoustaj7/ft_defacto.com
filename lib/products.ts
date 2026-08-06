@@ -51,3 +51,35 @@ export function getSubcategories(category?: string): string[] {
     : db.prepare(sql).all()) as { subcategory: string }[];
   return rows.map((r) => r.subcategory);
 }
+
+export function searchProducts(query: string): Product[] {
+  if (!query.trim()) return [];
+  
+  // Normalize the query: lowercase, trim
+  let q = query.toLowerCase().trim();
+  
+  // Very basic "stemming" - if it ends with 's', also search without it
+  // (e.g. "t-shirts" -> "t-shirt")
+  const qWithoutS = q.endsWith('s') ? q.slice(0, -1) : q;
+  const qWithS = !q.endsWith('s') ? q + 's' : q;
+
+  const sql = `
+    SELECT * FROM products 
+    WHERE 
+      name LIKE @q OR 
+      subcategory LIKE @q OR
+      category LIKE @q OR
+      name LIKE @qWithoutS OR
+      subcategory LIKE @qWithoutS OR
+      name LIKE @qWithS OR
+      subcategory LIKE @qWithS
+    ORDER BY is_bestseller DESC, created_at DESC
+    LIMIT 8
+  `;
+
+  return db.prepare(sql).all({
+    q: `%${q}%`,
+    qWithoutS: `%${qWithoutS}%`,
+    qWithS: `%${qWithS}%`
+  }) as Product[];
+}

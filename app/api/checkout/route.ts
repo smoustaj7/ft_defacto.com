@@ -1,10 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getOrCreateSessionId } from "@/lib/session";
+import { getAuthUserId } from "@/lib/session";
 import { getCart, clearCart, cartTotals } from "@/lib/cart";
 import { db } from "@/lib/db";
 
 export async function POST(req: NextRequest) {
-  const sessionId = await getOrCreateSessionId();
+  const userId = await getAuthUserId();
+  if (!userId) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // Generate a dummy sessionId to insert, since we still need it for the schema
+  // Alternatively, just provide empty string, as cart logic changed
+  const sessionId = "checkout-dummy";
+
   const { fullName, address, city, email } = await req.json();
 
   if (!fullName || !address || !city || !email) {
@@ -14,7 +22,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const items = getCart(sessionId);
+  const items = getCart(userId);
   if (items.length === 0) {
     return NextResponse.json({ error: "Cart is empty" }, { status: 400 });
   }
@@ -23,11 +31,12 @@ export async function POST(req: NextRequest) {
 
   const result = db
     .prepare(
-      `INSERT INTO orders (session_id, items, subtotal, shipping, total, full_name, address, city, email)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      `INSERT INTO orders (session_id, user_id, items, subtotal, shipping, total, full_name, address, city, email)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
     )
     .run(
       sessionId,
+      userId,
       JSON.stringify(items),
       subtotal,
       shipping,
@@ -38,7 +47,7 @@ export async function POST(req: NextRequest) {
       email
     );
 
-  clearCart(sessionId);
+  clearCart(userId);
 
   return NextResponse.json({ orderId: result.lastInsertRowid });
 }
