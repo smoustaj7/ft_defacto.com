@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { notifyAuthChanged } from "@/lib/useAuthStatus";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -28,6 +29,7 @@ export default function RegisterPage() {
       return;
     }
 
+    notifyAuthChanged();
     router.push("/account");
     router.refresh();
   }

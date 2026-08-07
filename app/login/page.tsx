@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { notifyAuthChanged } from "@/lib/useAuthStatus";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -29,8 +30,9 @@ export default function LoginPage() {
       return;
     }
 
+    notifyAuthChanged();
     router.push("/account");
-    router.refresh(); // Refresh to update navbar state
+    router.refresh();
   }
 
   return (

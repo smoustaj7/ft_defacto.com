@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { useCartCount } from "@/lib/useCartCount";
+import { useAuthStatus } from "@/lib/useAuthStatus";
 import { useRouter } from "next/navigation";
 
 const CATEGORIES = [
@@ -15,18 +16,13 @@ const CATEGORIES = [
 
 export function Navbar() {
   const count = useCartCount();
+  const loggedIn = useAuthStatus();
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ products: any[]; categories: any[] } | null>(null);
   const [showDropdown, setShowDropdown] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    fetch("/api/auth/me")
-      .then((res) => res.json())
-      .then((data) => setLoggedIn(data.loggedIn));
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
