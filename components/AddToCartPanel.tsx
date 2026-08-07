@@ -19,7 +19,7 @@ export function AddToCartPanel({
 
   async function handleAdd() {
     if (!size) {
-      setError("Pick a size first");
+      setError("Please select a size first");
       return;
     }
     setError(null);
@@ -37,54 +37,61 @@ export function AddToCartPanel({
       if (!res.ok) throw new Error();
       notifyCartUpdated();
       setStatus("added");
-      setTimeout(() => setStatus("idle"), 2000);
+      setTimeout(() => setStatus("idle"), 2500);
     } catch {
       setStatus("error");
     }
   }
 
   return (
-    <div>
-      <div className="text-xs uppercase tracking-wider text-ink-soft mb-3 flex items-center justify-between">
-        <span>Size {size ? `— ${size}` : ""}</span>
-        <button className="underline hover:text-ink">Size guide</button>
-      </div>
-      <div className="tick-rule mb-4" />
-      <div className="flex flex-wrap gap-2 mb-2">
-        {sizes.map((s) => (
-          <button
-            key={s}
-            onClick={() => {
-              setSize(s);
-              setError(null);
-            }}
-            className={`min-w-11 h-11 px-3 rounded-md border text-sm font-medium transition-colors ${
-              size === s
-                ? "bg-ink text-paper border-ink"
-                : "border-line hover:border-ink"
-            }`}
-            aria-pressed={size === s}
-          >
-            {s}
+    <div className="space-y-5">
+      <div>
+        <div className="text-xs uppercase tracking-wider text-ink-soft mb-2.5 flex items-center justify-between font-medium">
+          <span>Size {size ? `— ${size}` : ""}</span>
+          <button type="button" className="underline hover:text-ink transition-colors focus-visible:outline-2 focus-visible:outline-signal rounded-xs">
+            Size guide
           </button>
-        ))}
+        </div>
+        <div className="tick-rule mb-3.5" />
+        <div className="flex flex-wrap gap-2">
+          {sizes.map((s) => (
+            <button
+              key={s}
+              type="button"
+              onClick={() => {
+                setSize(s);
+                setError(null);
+              }}
+              className={`min-w-11 h-11 px-3.5 rounded-md border text-sm font-medium transition-all focus-visible:outline-2 focus-visible:outline-signal focus-visible:outline-offset-2 ${
+                size === s
+                  ? "bg-ink text-paper border-ink shadow-xs"
+                  : "border-line bg-paper text-ink hover:border-ink hover:bg-bone/40"
+              }`}
+              aria-pressed={size === s}
+            >
+              {s}
+            </button>
+          ))}
+        </div>
+        {error && <p className="text-xs font-medium text-signal mt-2 animate-shake">{error}</p>}
       </div>
-      {error && <p className="text-sm text-signal mb-2">{error}</p>}
 
-      <div className="flex items-center gap-4 mt-6 mb-6">
-        <span className="text-sm text-ink-soft">Quantity</span>
-        <div className="flex items-center border border-line rounded-full">
+      <div className="flex items-center justify-between pt-1">
+        <span className="text-sm text-ink-soft font-medium">Quantity</span>
+        <div className="flex items-center border border-line rounded-full bg-paper">
           <button
+            type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-            className="w-9 h-9 flex items-center justify-center text-lg"
+            className="w-9 h-9 flex items-center justify-center text-base hover:bg-bone rounded-l-full transition-colors focus-visible:outline-2 focus-visible:outline-signal"
             aria-label="Decrease quantity"
           >
             −
           </button>
-          <span className="w-8 text-center text-sm">{quantity}</span>
+          <span className="w-8 text-center text-sm font-semibold text-ink">{quantity}</span>
           <button
+            type="button"
             onClick={() => setQuantity((q) => Math.min(10, q + 1))}
-            className="w-9 h-9 flex items-center justify-center text-lg"
+            className="w-9 h-9 flex items-center justify-center text-base hover:bg-bone rounded-r-full transition-colors focus-visible:outline-2 focus-visible:outline-signal"
             aria-label="Increase quantity"
           >
             +
@@ -92,22 +99,26 @@ export function AddToCartPanel({
         </div>
       </div>
 
-      <button
-        onClick={handleAdd}
-        disabled={status === "loading"}
-        className="w-full bg-signal text-paper py-3.5 rounded-full font-medium hover:bg-signal-dark transition-colors disabled:opacity-60"
-      >
-        {status === "loading" ? "Adding…" : status === "added" ? "Added ✓" : "Add to Bag"}
-      </button>
-
-      {status === "added" && (
+      <div className="pt-2 space-y-3">
         <button
-          onClick={() => router.push("/cart")}
-          className="w-full mt-3 border border-ink text-ink py-3 rounded-full font-medium hover:bg-bone transition-colors"
+          type="button"
+          onClick={handleAdd}
+          disabled={status === "loading"}
+          className="w-full bg-signal text-paper py-3.5 rounded-full font-medium hover:bg-signal-dark active:scale-[0.99] transition-all disabled:opacity-60 shadow-xs focus-visible:outline-2 focus-visible:outline-signal focus-visible:outline-offset-2"
         >
-          View Bag
+          {status === "loading" ? "Adding…" : status === "added" ? "Added ✓" : "Add to Bag"}
         </button>
-      )}
+
+        {status === "added" && (
+          <button
+            type="button"
+            onClick={() => router.push("/cart")}
+            className="w-full border border-ink text-ink py-3 rounded-full font-medium hover:bg-bone transition-colors focus-visible:outline-2 focus-visible:outline-signal"
+          >
+            View Bag
+          </button>
+        )}
+      </div>
     </div>
   );
 }

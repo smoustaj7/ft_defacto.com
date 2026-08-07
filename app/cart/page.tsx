@@ -75,7 +75,31 @@ export default function CartPage() {
   }
 
   if (!data) {
-    return <div className="max-w-4xl mx-auto px-4 py-20 text-center text-ink-soft">Loading your bag…</div>;
+    return (
+      <div className="max-w-6xl mx-auto px-4 md:px-6 py-10">
+        <div className="h-9 w-36 bg-line/50 rounded animate-pulse mb-8" />
+        <div className="grid md:grid-cols-[1fr_320px] gap-10">
+          <div className="space-y-6">
+            {Array.from({ length: 3 }).map((_, i) => (
+              <div key={i} className="py-6 flex gap-4 animate-pulse border-b border-line/40">
+                <div className="w-24 h-28 bg-line/50 rounded-md shrink-0" />
+                <div className="flex-1 space-y-3">
+                  <div className="h-5 bg-line/50 rounded w-1/2" />
+                  <div className="h-4 bg-line/50 rounded w-1/4" />
+                  <div className="h-8 bg-line/50 rounded-full w-32 mt-4" />
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="border border-line/60 rounded-md p-6 h-64 animate-pulse space-y-4">
+            <div className="h-5 bg-line/50 rounded w-1/3" />
+            <div className="h-4 bg-line/50 rounded w-full" />
+            <div className="h-4 bg-line/50 rounded w-full" />
+            <div className="h-10 bg-line/50 rounded-full w-full mt-6" />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (data.items.length === 0) {
