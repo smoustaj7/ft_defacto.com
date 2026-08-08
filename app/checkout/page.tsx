@@ -84,23 +84,27 @@ export default function CheckoutPage() {
             <input
               id="fullName"
               required
+              autoComplete="name"
+              autoCapitalize="words"
               value={form.fullName}
               onChange={(e) => setForm({ ...form, fullName: e.target.value })}
-              className="w-full border border-line rounded-md px-3 py-2.5 text-sm"
+              className="w-full min-h-[48px] border border-line rounded-md px-3.5 py-3 text-base sm:text-sm bg-paper text-ink outline-none focus:ring-2 focus:ring-signal focus:border-transparent transition-all"
               placeholder="Souhaib Moustajib"
             />
           </div>
           <div>
             <label className="block text-sm font-medium mb-1.5" htmlFor="email">
-              Email
+              Email address
             </label>
             <input
               id="email"
               type="email"
+              inputMode="email"
+              autoComplete="email"
               required
               value={form.email}
               onChange={(e) => setForm({ ...form, email: e.target.value })}
-              className="w-full border border-line rounded-md px-3 py-2.5 text-sm"
+              className="w-full min-h-[48px] border border-line rounded-md px-3.5 py-3 text-base sm:text-sm bg-paper text-ink outline-none focus:ring-2 focus:ring-signal focus:border-transparent transition-all"
               placeholder="you@example.com"
             />
           </div>
@@ -111,9 +115,10 @@ export default function CheckoutPage() {
             <input
               id="address"
               required
+              autoComplete="shipping street-address"
               value={form.address}
               onChange={(e) => setForm({ ...form, address: e.target.value })}
-              className="w-full border border-line rounded-md px-3 py-2.5 text-sm"
+              className="w-full min-h-[48px] border border-line rounded-md px-3.5 py-3 text-base sm:text-sm bg-paper text-ink outline-none focus:ring-2 focus:ring-signal focus:border-transparent transition-all"
               placeholder="Street, building, apartment"
             />
           </div>
@@ -124,23 +129,24 @@ export default function CheckoutPage() {
             <input
               id="city"
               required
+              autoComplete="shipping address-level2"
               value={form.city}
               onChange={(e) => setForm({ ...form, city: e.target.value })}
-              className="w-full border border-line rounded-md px-3 py-2.5 text-sm"
+              className="w-full min-h-[48px] border border-line rounded-md px-3.5 py-3 text-base sm:text-sm bg-paper text-ink outline-none focus:ring-2 focus:ring-signal focus:border-transparent transition-all"
               placeholder="Casablanca"
             />
           </div>
 
-          {error && <p className="text-sm text-signal">{error}</p>}
+          {error && <p className="text-sm font-medium text-signal">{error}</p>}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-signal text-paper py-3.5 rounded-full font-medium hover:bg-signal-dark transition-colors disabled:opacity-60"
+            className="w-full min-h-[48px] bg-signal text-paper py-3.5 rounded-full font-medium hover:bg-signal-dark active:scale-[0.99] transition-all disabled:opacity-60 shadow-xs focus-visible:outline-2 focus-visible:outline-signal"
           >
             {submitting ? "Placing order…" : `Place Order — ${totals.total} MAD`}
           </button>
-          <p className="text-xs text-ink-soft text-center">
+          <p className="text-xs text-ink-soft text-center pt-1">
             This is a demo checkout. No payment is collected.
           </p>
         </form>
