@@ -8,25 +8,25 @@ export default function HomePage() {
   const newIn = getProducts({ sort: "newest" }).slice(0, 6);
 
   return (
-    <div>
+    <div className="w-full max-w-full overflow-x-hidden">
       <section className="bg-signal text-paper">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-16 md:py-24 grid md:grid-cols-2 gap-10 items-center">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 sm:py-16 md:py-24 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div>
-            <p className="text-sm tracking-widest uppercase text-paper/70 mb-4">
+            <p className="text-xs sm:text-sm tracking-widest uppercase text-paper/75 mb-3 font-medium">
               Autumn Collection
             </p>
-            <h1 className="display-heading text-5xl md:text-7xl leading-[0.95] mb-6">
+            <h1 className="display-heading text-4xl sm:text-5xl md:text-7xl leading-[0.95] mb-5 break-words">
               Made to
               <br />
               Move With You
             </h1>
-            <p className="text-paper/85 max-w-md mb-8">
+            <p className="text-sm sm:text-base text-paper/90 max-w-md mb-6 leading-relaxed">
               Everyday clothing for men, women and kids. Solid fabrics, honest
               prices, and a store that gets out of your way.
             </p>
             <Link
               href="/products"
-              className="inline-flex items-center gap-2 bg-ink text-paper px-6 py-3 rounded-full font-medium hover:bg-ink/90 transition-colors"
+              className="inline-flex items-center gap-2 bg-ink text-paper px-6 py-3 rounded-full font-medium text-sm hover:bg-ink/90 transition-colors"
             >
               Shop new arrivals
               <span aria-hidden>→</span>
@@ -48,51 +48,51 @@ export default function HomePage() {
       </section>
 
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="tick-rule my-10" />
+        <div className="tick-rule my-8 sm:my-10" />
 
         <section aria-labelledby="shop-by-category">
           <h2 id="shop-by-category" className="sr-only">
             Shop by category
           </h2>
-          <div className="grid sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             <CategoryCard label="Men" href="/products?category=men" hex="#2F4A66" subcategory="shirts" />
             <CategoryCard label="Women" href="/products?category=women" hex="#A54B3F" subcategory="dresses" />
             <CategoryCard label="Kids" href="/products?category=kids" hex="#E8C547" subcategory="t-shirts" />
           </div>
         </section>
 
-        <div className="tick-rule my-14" />
+        <div className="tick-rule my-10 sm:my-14" />
 
         <section aria-labelledby="bestsellers">
           <div className="flex items-end justify-between mb-6">
-            <h2 id="bestsellers" className="display-heading text-2xl">
+            <h2 id="bestsellers" className="display-heading text-xl sm:text-2xl">
               Bestsellers
             </h2>
             <Link href="/products?sort=bestseller" className="text-sm font-medium hover:text-signal">
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-8">
             {bestsellers.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </section>
 
-        <div className="tick-rule my-14" />
+        <div className="tick-rule my-10 sm:my-14" />
 
-        <section aria-labelledby="new-in" className="pb-20">
+        <section aria-labelledby="new-in" className="pb-16 sm:pb-20">
           <div className="flex items-end justify-between mb-6">
-            <h2 id="new-in" className="display-heading text-2xl">
+            <h2 id="new-in" className="display-heading text-xl sm:text-2xl">
               New This Week
             </h2>
             <Link href="/products?sort=newest" className="text-sm font-medium hover:text-signal">
               View all
             </Link>
           </div>
-          <div className="flex gap-4 overflow-x-auto snap-x pb-2">
+          <div className="flex gap-3 sm:gap-4 overflow-x-auto snap-x pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
             {newIn.map((p) => (
-              <div key={p.id} className="w-44 md:w-56 shrink-0 snap-start">
+              <div key={p.id} className="w-40 sm:w-48 md:w-56 shrink-0 snap-start">
                 <ProductCard product={p} />
               </div>
             ))}

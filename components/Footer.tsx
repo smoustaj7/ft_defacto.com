@@ -5,9 +5,9 @@ export function Footer() {
     <footer className="mt-24 bg-ink text-paper">
       <div className="max-w-7xl mx-auto px-4 md:px-6 py-14">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
+          <div className="col-span-2 md:col-span-1">
             <div className="display-heading text-xl mb-4">Defacto</div>
-            <p className="text-sm text-paper/60 max-w-xs">
+            <p className="text-sm text-paper/65 max-w-sm">
               Everyday clothing for men, women, and kids — solid fabrics,
               honest prices, and a store that gets out of your way.
             </p>

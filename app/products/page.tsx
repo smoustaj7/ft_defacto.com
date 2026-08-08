@@ -79,7 +79,7 @@ async function ProductGrid({
       <p className="text-sm text-ink-soft mb-6 -mt-10">
         {products.length} {products.length === 1 ? "item" : "items"}
       </p>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-10">
         {products.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}

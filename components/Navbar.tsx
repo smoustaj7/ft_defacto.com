@@ -72,8 +72,9 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-4 shrink-0">
-            <div className="relative hidden sm:block" ref={dropdownRef}>
+          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+            {/* Search Input Container */}
+            <div className="relative" ref={dropdownRef}>
               <form
                 action="/products"
                 onSubmit={(e) => {
@@ -83,7 +84,7 @@ export function Navbar() {
                     router.push(`/products?q=${encodeURIComponent(query)}`);
                   }
                 }}
-                className="flex items-center border border-line rounded-full px-3 py-1.5"
+                className="flex items-center border border-line rounded-full px-3 py-1.5 bg-paper"
               >
                 <input
                   name="q"
@@ -95,15 +96,15 @@ export function Navbar() {
                   onFocus={() => {
                     if (query.trim()) setShowDropdown(true);
                   }}
-                  placeholder="Search products"
-                  className="text-sm outline-none w-32 lg:w-48 bg-transparent"
+                  placeholder="Search"
+                  className="text-sm outline-none w-24 xs:w-32 sm:w-40 lg:w-48 bg-transparent"
                   aria-label="Search products"
                   autoComplete="off"
                 />
               </form>
 
               {showDropdown && results && (results.products.length > 0 || results.categories.length > 0) && (
-                <div className="absolute top-full right-0 mt-2 w-80 bg-paper border border-line rounded-md shadow-lg overflow-hidden z-50">
+                <div className="absolute top-full right-0 sm:right-0 mt-2 w-[calc(100vw-2rem)] max-w-sm sm:w-80 bg-paper border border-line rounded-md shadow-lg overflow-hidden z-50">
                   {results.categories.length > 0 && (
                     <div className="p-3 border-b border-line bg-bone/30">
                       <div className="text-xs uppercase tracking-wider text-ink-soft mb-2">Categories</div>
@@ -158,14 +159,14 @@ export function Navbar() {
             </div>
             <Link
               href={loggedIn ? "/account" : "/login"}
-              className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-bone transition-colors"
+              className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full hover:bg-bone transition-colors"
               aria-label="Account"
             >
               <UserIcon />
             </Link>
             <Link
               href="/cart"
-              className="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-bone transition-colors"
+              className="relative flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full hover:bg-bone transition-colors"
               aria-label="View cart"
             >
               <BagIcon />
