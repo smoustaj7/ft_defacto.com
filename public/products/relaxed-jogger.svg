@@ -1,13 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1000" role="img" aria-label="Relaxed Jogger">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" role="img" aria-label="Relaxed Jogger">
   <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%" stop-color="#4A4A4A" />
-      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.12" />
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#6b5f52" />
+      <stop offset="100%" stop-color="#f8f5ef" />
     </linearGradient>
+    <linearGradient id="shadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="rgba(0,0,0,0.08)" />
+      <stop offset="100%" stop-color="rgba(0,0,0,0)" />
+    </linearGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="18" stdDeviation="24" flood-color="rgba(0,0,0,0.12)" />
+    </filter>
   </defs>
-  <rect width="800" height="1000" rx="48" fill="url(#g)" />
-  <rect x="40" y="40" width="720" height="920" rx="40" fill="rgba(255,255,255,0.16)" />
-  <circle cx="400" cy="300" r="188" fill="rgba(255,255,255,0.15)" />
-  <path d="M180 710 C260 580 430 560 520 690" stroke="rgba(255,255,255,0.75)" stroke-width="24" fill="none" stroke-linecap="round" />
-  <text x="400" y="840" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="42" font-weight="700" fill="#111111" opacity="0.88">Relaxed Jogger</text>
+  <rect width="900" height="1200" fill="url(#bg)" />
+  <rect x="60" y="60" width="780" height="1080" rx="48" fill="#ffffff" opacity="0.76" />
+  <rect x="80" y="80" width="740" height="1040" rx="44" fill="rgba(255,255,255,0.85)" />
+  <g filter="url(#soft)">
+    <rect x="120" y="180" width="660" height="740" rx="36" fill="#f8f4ed" />
+  </g>
+  <path d="M180 220 C210 140 280 120 360 160 C440 200 520 200 600 160 C680 120 750 140 780 220" fill="none" stroke="#c8b29c" stroke-width="12" stroke-linecap="round" />
+  <g transform="translate(220 270)">
+    <path d="M-40 40 L40 40 L80 310 C80 360 40 410 10 410 L-10 410 C-40 410 -80 360 -80 310 Z" fill="#eef1ea" stroke="#ada18b" stroke-width="10" />
+    <path d="M-40 40 L40 40" fill="none" stroke="#ada18b" stroke-width="10" />
+  </g>
+  <rect x="120" y="930" width="660" height="120" rx="30" fill="rgba(255,255,255,0.8)" />
+  <text x="450" y="1000" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="42" font-weight="700" fill="#2b241d">Relaxed Jogger</text>
+  <text x="450" y="1048" text-anchor="middle" font-family="Inter,system-ui,sans-serif" font-size="22" fill="#6a5f53" opacity="0.85">Old money edit</text>
 </svg>
