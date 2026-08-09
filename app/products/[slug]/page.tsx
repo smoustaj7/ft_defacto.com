@@ -34,16 +34,22 @@ export default async function ProductPage({ params }: PageProps<"/products/[slug
           <ProductImage
             colorHex={product.color_hex}
             subcategory={product.subcategory}
+            imageUrl={product.image_url}
+            alt={product.name}
             className="col-span-2 aspect-[4/5] rounded-md"
           />
           <ProductImage
             colorHex={product.color_hex}
             subcategory={product.subcategory}
+            imageUrl={product.image_url}
+            alt={product.name}
             className="aspect-square rounded-md opacity-90"
           />
           <ProductImage
             colorHex={product.color_hex}
             subcategory={product.subcategory}
+            imageUrl={product.image_url}
+            alt={product.name}
             className="aspect-square rounded-md opacity-75"
           />
         </div>

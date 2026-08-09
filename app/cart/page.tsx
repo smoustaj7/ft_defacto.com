@@ -15,6 +15,7 @@ type CartLine = {
   price: number;
   color_name: string;
   color_hex: string;
+  image_url: string;
 };
 
 type CartResponse = {
@@ -129,6 +130,8 @@ export default function CartPage() {
                 <ProductImage
                   colorHex={item.color_hex}
                   subcategory={FALLBACK_SUBCATEGORY}
+                  imageUrl={item.image_url}
+                  alt={item.name}
                   className="w-24 h-28 rounded-md"
                 />
               </Link>

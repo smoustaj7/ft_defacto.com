@@ -13,6 +13,8 @@ export function ProductCard({ product }: { product: Product }) {
         <ProductImage
           colorHex={product.color_hex}
           subcategory={product.subcategory}
+          imageUrl={product.image_url}
+          alt={product.name}
           className="w-full h-full transition-transform duration-300 group-hover:scale-[1.04]"
         />
         <div className="absolute top-2 left-2 flex gap-1.5 z-10">

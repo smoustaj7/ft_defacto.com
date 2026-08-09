@@ -12,10 +12,14 @@ function readableLineColor(hex: string) {
 export function ProductImage({
   colorHex,
   subcategory,
+  imageUrl,
+  alt,
   className,
 }: {
   colorHex: string;
   subcategory: string;
+  imageUrl?: string;
+  alt?: string;
   className?: string;
 }) {
   const lineColor = readableLineColor(colorHex);
@@ -24,7 +28,15 @@ export function ProductImage({
       className={`relative flex items-center justify-center overflow-hidden ${className ?? ""}`}
       style={{ backgroundColor: colorHex, color: lineColor }}
     >
-      <GarmentIcon subcategory={subcategory} className="w-2/3 h-2/3 opacity-90" />
+      {imageUrl ? (
+        <img
+          src={imageUrl}
+          alt={alt ?? subcategory}
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+      ) : (
+        <GarmentIcon subcategory={subcategory} className="w-2/3 h-2/3 opacity-90" />
+      )}
       <div
         className="absolute inset-0 pointer-events-none"
         style={{

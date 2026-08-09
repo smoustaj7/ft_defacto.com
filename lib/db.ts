@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS products (
   description TEXT NOT NULL,
   color_name TEXT NOT NULL,
   color_hex TEXT NOT NULL,
+  image_url TEXT NOT NULL DEFAULT '',
   sizes TEXT NOT NULL,         -- JSON array
   is_new INTEGER DEFAULT 0,
   is_bestseller INTEGER DEFAULT 0,
@@ -97,8 +98,8 @@ function seedIfEmpty() {
   ];
 
   const insert = db.prepare(`
-    INSERT INTO products (slug, name, category, subcategory, price, compare_at_price, description, color_name, color_hex, sizes, is_new, is_bestseller)
-    VALUES (@slug, @name, @category, @subcategory, @price, @compare, @desc, @color, @hex, @sizes, @isNew, @bestseller)
+    INSERT INTO products (slug, name, category, subcategory, price, compare_at_price, description, color_name, color_hex, image_url, sizes, is_new, is_bestseller)
+    VALUES (@slug, @name, @category, @subcategory, @price, @compare, @desc, @color, @hex, @imageUrl, @sizes, @isNew, @bestseller)
   `);
 
   const slugify = (s: string) =>
@@ -106,8 +107,9 @@ function seedIfEmpty() {
 
   const insertMany = db.transaction((items: typeof products) => {
     for (const p of items) {
+      const slug = slugify(p.name);
       insert.run({
-        slug: slugify(p.name),
+        slug,
         name: p.name,
         category: p.category,
         subcategory: p.subcategory,
@@ -116,6 +118,7 @@ function seedIfEmpty() {
         desc: p.desc,
         color: p.color,
         hex: p.hex,
+        imageUrl: `/products/${slug}.svg`,
         sizes: JSON.stringify(p.sizes),
         isNew: p.isNew,
         bestseller: p.bestseller,
@@ -125,6 +128,36 @@ function seedIfEmpty() {
 
   insertMany(products);
 }
+
+function addImageUrlColumnIfMissing() {
+  const columns = db
+    .prepare("PRAGMA table_info(products)")
+    .all() as { name: string }[];
+  if (!columns.some((col) => col.name === "image_url")) {
+    db.exec("ALTER TABLE products ADD COLUMN image_url TEXT NOT NULL DEFAULT '';");
+  }
+}
+
+function populateImageUrls() {
+  const rows = db
+    .prepare("SELECT id, slug, image_url FROM products")
+    .all() as { id: number; slug: string; image_url: string }[];
+  const update = db.prepare("UPDATE products SET image_url = ? WHERE id = ?");
+  const slugToPath = (slug: string) => `/products/${slug}.svg`;
+
+  const transaction = db.transaction((items: typeof rows) => {
+    for (const item of items) {
+      if (!item.image_url) {
+        update.run(slugToPath(item.slug), item.id);
+      }
+    }
+  });
+
+  transaction(rows);
+}
+
+addImageUrlColumnIfMissing();
+populateImageUrls();
 
 seedIfEmpty();
 
@@ -139,6 +172,7 @@ export type Product = {
   description: string;
   color_name: string;
   color_hex: string;
+  image_url: string;
   sizes: string; // JSON
   is_new: number;
   is_bestseller: number;
