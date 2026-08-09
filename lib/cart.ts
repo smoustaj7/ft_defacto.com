@@ -10,13 +10,14 @@ export type CartLine = {
   price: number;
   color_name: string;
   color_hex: string;
+  image_url: string;
 };
 
 export function getCart(userId: number): CartLine[] {
   return db
     .prepare(
       `SELECT ci.id, ci.product_id, ci.size, ci.quantity,
-              p.slug, p.name, p.price, p.color_name, p.color_hex
+              p.slug, p.name, p.price, p.color_name, p.color_hex, p.image_url
        FROM cart_items ci
        JOIN products p ON p.id = ci.product_id
        WHERE ci.user_id = ?
