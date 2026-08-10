@@ -7,6 +7,11 @@ export default function HomePage() {
   const bestsellers = getProducts({ sort: "bestseller" }).slice(0, 4);
   const newIn = getProducts({ sort: "newest" }).slice(0, 6);
 
+  // Representative images for category cards (falls back to color blocks)
+  const menSample = getProducts({ category: "men" })[0];
+  const womenSample = getProducts({ category: "women" })[0];
+  const kidsSample = getProducts({ category: "kids" })[0];
+
   return (
     <div className="w-full max-w-full overflow-x-hidden">
       <section className="bg-signal text-paper">
@@ -35,12 +40,16 @@ export default function HomePage() {
           <div className="hidden md:grid grid-cols-2 gap-4">
             <ProductImage
               colorHex="#EFE6D8"
-              subcategory="knitwear"
+              subcategory={newIn[0]?.subcategory ?? "knitwear"}
+              imageUrl={newIn[0]?.image_url}
+              alt={newIn[0]?.name}
               className="aspect-[3/4] rounded-md translate-y-6"
             />
             <ProductImage
               colorHex="#1E1E1E"
-              subcategory="outerwear"
+              subcategory={bestsellers[0]?.subcategory ?? "outerwear"}
+              imageUrl={bestsellers[0]?.image_url}
+              alt={bestsellers[0]?.name}
               className="aspect-[3/4] rounded-md"
             />
           </div>
@@ -54,10 +63,10 @@ export default function HomePage() {
           <h2 id="shop-by-category" className="sr-only">
             Shop by category
           </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <CategoryCard label="Men" href="/products?category=men" hex="#2F4A66" subcategory="shirts" />
-            <CategoryCard label="Women" href="/products?category=women" hex="#A54B3F" subcategory="dresses" />
-            <CategoryCard label="Kids" href="/products?category=kids" hex="#E8C547" subcategory="t-shirts" />
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <CategoryCard label="Men" href="/products?category=men" hex="#2F4A66" subcategory="shirts" imageUrl={menSample?.image_url} />
+            <CategoryCard label="Women" href="/products?category=women" hex="#A54B3F" subcategory="dresses" imageUrl={womenSample?.image_url} />
+            <CategoryCard label="Kids" href="/products?category=kids" hex="#E8C547" subcategory="t-shirts" imageUrl={kidsSample?.image_url} />
           </div>
         </section>
 
@@ -108,17 +117,21 @@ function CategoryCard({
   href,
   hex,
   subcategory,
+  imageUrl,
 }: {
   label: string;
   href: string;
   hex: string;
   subcategory: string;
+  imageUrl?: string;
 }) {
   return (
     <Link href={href} className="group block relative rounded-md overflow-hidden">
       <ProductImage
         colorHex={hex}
         subcategory={subcategory}
+        imageUrl={imageUrl}
+        alt={label}
         className="aspect-[4/5] transition-transform duration-300 group-hover:scale-[1.03]"
       />
       <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-transparent" />
