@@ -20,13 +20,21 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({ fullName: "", address: "", city: "", email: "" });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [sessionError, setSessionError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch("/api/cart", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => {
+      .then(async (r) => {
+        const data = await r.json();
+        if (!r.ok) {
+          setSessionError(data.error || "Your session has expired. Please sign in again.");
+          return;
+        }
         setItems(data.items);
         setTotals(data.totals);
+      })
+      .catch(() => {
+        setSessionError("Unable to load your cart. Please refresh or sign in again.");
       });
   }, []);
 
@@ -43,6 +51,9 @@ export default function CheckoutPage() {
       const data = await res.json();
       if (!res.ok) {
         setError(data.error ?? "Something went wrong");
+        if (res.status === 401) {
+          setSessionError("We couldn't validate your session. Please log in again.");
+        }
         setSubmitting(false);
         return;
       }
@@ -55,6 +66,18 @@ export default function CheckoutPage() {
 
   if (items === null) {
     return <div className="max-w-4xl mx-auto px-4 py-20 text-center text-ink-soft">Loading…</div>;
+  }
+
+  if (sessionError) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-24 text-center">
+        <h1 className="display-heading text-3xl mb-3">Session Required</h1>
+        <p className="text-ink-soft mb-8">{sessionError}</p>
+        <Link href="/login" className="text-signal font-medium underline">
+          Sign in to continue to checkout
+        </Link>
+      </div>
+    );
   }
 
   if (items.length === 0) {
@@ -72,7 +95,7 @@ export default function CheckoutPage() {
     <div className="max-w-5xl mx-auto px-4 md:px-6 py-10">
       <h1 className="display-heading text-3xl mb-2">Checkout</h1>
       <p className="text-sm text-ink-soft mb-8">
-        One page, one step. No account required.
+        One page, one step. Sign in to place your order.
       </p>
 
       <div className="grid md:grid-cols-[1fr_320px] gap-10">

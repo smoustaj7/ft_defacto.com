@@ -29,11 +29,19 @@ const FALLBACK_SUBCATEGORY = "t-shirts";
 
 export default function CartPage() {
   const [data, setData] = useState<CartResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
   const [busyId, setBusyId] = useState<number | null>(null);
 
   async function load() {
     const res = await fetch("/api/cart", { cache: "no-store" });
-    setData(await res.json());
+    const data = await res.json();
+    if (!res.ok) {
+      setError(data.error || "Unable to load your bag. Please try again.");
+      setData({ items: [], totals: { subtotal: 0, shipping: 0, total: 0 } });
+      return;
+    }
+    setError(null);
+    setData(data);
   }
 
   useEffect(() => {
@@ -102,7 +110,20 @@ export default function CartPage() {
       </div>
     );
   }
-
+  if (error) {
+    return (
+      <div className="max-w-4xl mx-auto px-4 py-24 text-center">
+        <h1 className="display-heading text-3xl mb-3">Your Bag Needs a Login</h1>
+        <p className="text-ink-soft mb-8">{error}</p>
+        <Link
+          href="/login"
+          className="inline-block bg-signal text-paper px-6 py-3 rounded-full font-medium hover:bg-signal-dark transition-colors"
+        >
+          Sign in to continue
+        </Link>
+      </div>
+    );
+  }
   if (data.items.length === 0) {
     return (
       <div className="max-w-4xl mx-auto px-4 py-24 text-center">
@@ -166,11 +187,14 @@ export default function CartPage() {
                       ))}
                     </select>
                   </label>
+                  {item.quantity >= 10 && (
+                    <span className="text-xs text-ink-soft">Max 10 per item.</span>
+                  )}
 
                   <div className="flex items-center border border-line rounded-full">
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                      disabled={busyId === item.id}
+                      disabled={busyId === item.id || item.quantity <= 1}
                       className="w-8 h-8 flex items-center justify-center"
                       aria-label="Decrease quantity"
                     >
@@ -179,7 +203,7 @@ export default function CartPage() {
                     <span className="w-6 text-center text-sm">{item.quantity}</span>
                     <button
                       onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                      disabled={busyId === item.id}
+                      disabled={busyId === item.id || item.quantity >= 10}
                       className="w-8 h-8 flex items-center justify-center"
                       aria-label="Increase quantity"
                     >

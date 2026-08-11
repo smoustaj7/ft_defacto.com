@@ -1,5 +1,7 @@
 import { db } from "./db";
 
+const MAX_QUANTITY = 10;
+
 export type CartLine = {
   id: number;
   product_id: number;
@@ -69,8 +71,9 @@ export function updateCartItem(
       db.prepare("DELETE FROM cart_items WHERE id = ?").run(itemId);
       return;
     }
+    const updatedQuantity = Math.min(updates.quantity, MAX_QUANTITY);
     db.prepare("UPDATE cart_items SET quantity = ? WHERE id = ?").run(
-      updates.quantity,
+      updatedQuantity,
       itemId
     );
   }
