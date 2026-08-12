@@ -1,16 +1,21 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { notifyAuthChanged } from "@/lib/useAuthStatus";
 
 export default function LoginPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  async function triggerGoogleSignIn() {
+    window.location.href = "/api/auth/google";
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -34,6 +39,13 @@ export default function LoginPage() {
     router.push("/account");
     router.refresh();
   }
+
+  useEffect(() => {
+    const googleError = searchParams?.get("error");
+    if (googleError) {
+      setError(decodeURIComponent(googleError));
+    }
+  }, [searchParams]);
 
   return (
     <div className="max-w-md mx-auto px-4 py-20">
@@ -74,6 +86,13 @@ export default function LoginPage() {
           className="w-full bg-ink text-paper py-3 rounded-full font-medium hover:bg-ink/90 transition-colors disabled:opacity-60 mt-2"
         >
           {loading ? "Logging in..." : "Log In"}
+        </button>
+        <button
+          type="button"
+          onClick={triggerGoogleSignIn}
+          className="w-full border border-line text-ink py-3 rounded-full font-medium hover:bg-bone transition-colors mt-3"
+        >
+          Continue with Google
         </button>
       </form>
       <div className="mt-6 text-center text-sm text-ink-soft">

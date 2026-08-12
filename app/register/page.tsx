@@ -11,6 +11,10 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
+  async function triggerGoogleSignIn() {
+    window.location.href = "/api/auth/google";
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
@@ -86,6 +90,13 @@ export default function RegisterPage() {
           className="w-full bg-ink text-paper py-3 rounded-full font-medium hover:bg-ink/90 transition-colors disabled:opacity-60 mt-2"
         >
           {loading ? "Creating..." : "Create Account"}
+        </button>
+        <button
+          type="button"
+          onClick={triggerGoogleSignIn}
+          className="w-full border border-line text-ink py-3 rounded-full font-medium hover:bg-bone transition-colors mt-3"
+        >
+          Continue with Google
         </button>
       </form>
       <div className="mt-6 text-center text-sm text-ink-soft">

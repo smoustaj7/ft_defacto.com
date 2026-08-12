@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
+  oauth_provider TEXT DEFAULT NULL,
   full_name TEXT NOT NULL,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
@@ -138,6 +139,15 @@ function addImageUrlColumnIfMissing() {
   }
 }
 
+function addOauthProviderColumnIfMissing() {
+  const columns = db
+    .prepare("PRAGMA table_info(users)")
+    .all() as { name: string }[];
+  if (!columns.some((col) => col.name === "oauth_provider")) {
+    db.exec("ALTER TABLE users ADD COLUMN oauth_provider TEXT DEFAULT NULL;");
+  }
+}
+
 function populateImageUrls() {
   const rows = db
     .prepare("SELECT id, slug, image_url FROM products")
@@ -157,6 +167,7 @@ function populateImageUrls() {
 }
 
 addImageUrlColumnIfMissing();
+addOauthProviderColumnIfMissing();
 populateImageUrls();
 
 seedIfEmpty();
