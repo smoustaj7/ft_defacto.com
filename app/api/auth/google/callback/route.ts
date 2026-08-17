@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     const error = url.searchParams.get("error");
 
     if (error) {
-      return NextResponse.redirect(`/login?error=${encodeURIComponent(error)}`);
+      return NextResponse.redirect(`${req.nextUrl.origin}/login?error=${encodeURIComponent(error)}`);
     }
 
     if (!code || !GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET) {
@@ -66,7 +66,7 @@ export async function GET(req: NextRequest) {
     const user = findOrCreateOAuthUser(email, fullName);
     await setAuthSession(user.id);
 
-    return NextResponse.redirect("/account");
+    return NextResponse.redirect(`${req.nextUrl.origin}/account`);
   } catch (err) {
     console.error("Google OAuth callback error:", err);
     return NextResponse.json({
