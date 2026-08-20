@@ -16,15 +16,15 @@ export default async function ProductsPage({
   const suspenseKey = JSON.stringify(sp);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 md:px-6 py-10">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-10">
       <div className="mb-8">
         <h1 className="display-heading text-3xl md:text-4xl capitalize">
           {category ? category : "All Products"}
         </h1>
       </div>
 
-      <div className="grid md:grid-cols-[220px_1fr] gap-10">
-        <aside className="md:sticky md:top-24 md:self-start">
+      <div>
+        <aside className="mb-8">
           <Suspense fallback={null}>
             <ProductFilters subcategories={subcategories} />
           </Suspense>
@@ -76,10 +76,10 @@ async function ProductGrid({
 
   return (
     <>
-      <p className="text-sm text-ink-soft mb-6 -mt-10">
+      <p className="text-sm text-ink-soft mb-6">
         {products.length} {products.length === 1 ? "item" : "items"}
       </p>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-10">
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-10">
         {products.map((p) => (
           <ProductCard key={p.id} product={p} />
         ))}
@@ -91,8 +91,8 @@ async function ProductGrid({
 function ProductGridSkeleton() {
   return (
     <>
-      <div className="w-16 h-5 bg-line/50 rounded animate-pulse mb-6 -mt-10"></div>
-      <div className="grid grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10">
+      <div className="w-16 h-5 bg-line/50 rounded animate-pulse mb-6"></div>
+      <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10">
         {Array.from({ length: 6 }).map((_, i) => (
           <div key={i} className="animate-pulse">
             <div className="aspect-[4/5] bg-line/50 rounded-md mb-4" />
