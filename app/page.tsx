@@ -15,7 +15,7 @@ export default function HomePage() {
   return (
     <div className="w-full max-w-full overflow-x-hidden">
       <section className="bg-signal text-paper">
-        <div className="max-w-7xl mx-auto px-4 md:px-6 py-12 sm:py-16 md:py-24 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10 py-12 sm:py-16 md:py-24 grid md:grid-cols-2 gap-8 md:gap-10 items-center">
           <div>
             <p className="text-xs sm:text-sm tracking-widest uppercase text-paper/75 mb-3 font-medium">
               Autumn Collection
@@ -56,7 +56,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="max-w-7xl mx-auto px-4 md:px-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-10">
         <div className="tick-rule my-8 sm:my-10" />
 
         <section aria-labelledby="shop-by-category">
