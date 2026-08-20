@@ -99,9 +99,9 @@ export default function HomePage() {
               View all
             </Link>
           </div>
-          <div className="flex gap-3 sm:gap-4 overflow-x-auto snap-x pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-8">
             {newIn.map((p) => (
-              <div key={p.id} className="w-40 sm:w-48 md:w-56 shrink-0 snap-start">
+              <div key={p.id}>
                 <ProductCard product={p} />
               </div>
             ))}
