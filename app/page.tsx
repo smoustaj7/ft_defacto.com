@@ -81,9 +81,11 @@ export default function HomePage() {
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-8">
+          <div className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
             {bestsellers.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <div key={p.id} className="basis-[calc((100%-0.75rem)/2)] md:basis-[calc((100%-2.25rem)/4)] shrink-0 snap-start">
+                <ProductCard product={p} />
+              </div>
             ))}
           </div>
         </section>
@@ -99,9 +101,9 @@ export default function HomePage() {
               View all
             </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-3 sm:gap-x-4 gap-y-6 sm:gap-y-8">
+          <div className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
             {newIn.map((p) => (
-              <div key={p.id}>
+              <div key={p.id} className="basis-[calc((100%-0.75rem)/2)] md:basis-[calc((100%-2.25rem)/4)] shrink-0 snap-start">
                 <ProductCard product={p} />
               </div>
             ))}
