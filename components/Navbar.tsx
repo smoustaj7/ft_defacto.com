@@ -50,11 +50,32 @@ export function Navbar() {
   }, [query]);
 
   return (
-    <header className="sticky top-0 z-50 bg-paper border-b border-line">
+    <header className="sticky top-0 z-50 bg-paper/95 backdrop-blur-md border-b border-line">
+      <div className="border-b border-line/70 bg-bone/35">
+        <div className="max-w-7xl mx-auto px-4 md:px-6 h-8 flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-ink-soft">
+          <span>Defacto / Everyday essentials</span>
+          <span className="hidden sm:block">Designed for the daily rotation</span>
+          <Link href="/products?sale=1" className="text-signal font-semibold hover:text-signal-dark transition-colors">
+            Sale now live
+          </Link>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 md:px-6">
-        <div className="flex items-center justify-between h-16 gap-4">
-          <Link href="/" className="display-heading text-2xl tracking-tight shrink-0">
-            Defacto
+        <div className="flex items-center justify-between h-[4.5rem] gap-4">
+          <Link href="/" className="group flex items-center gap-3 shrink-0" aria-label="Defacto home">
+            <span className="relative flex items-center justify-center w-10 h-10 bg-signal text-paper overflow-hidden">
+              <span className="display-heading text-lg leading-none">D</span>
+              <span className="absolute right-0 top-0 w-2 h-2 bg-ink" aria-hidden="true" />
+            </span>
+            <span>
+              <span className="display-heading block text-[1.65rem] leading-none tracking-tight group-hover:text-signal transition-colors">
+                Defacto
+              </span>
+              <span className="hidden sm:block mt-1 text-[9px] uppercase tracking-[0.24em] text-ink-soft">
+                Daily uniform
+              </span>
+            </span>
           </Link>
 
           {/* Categories: always visible, never behind a hamburger */}
@@ -72,7 +93,7 @@ export function Navbar() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <div className="flex items-center gap-1.5 sm:gap-3 shrink-0">
             {/* Search Input Container */}
             <div className="relative" ref={dropdownRef}>
               <form
@@ -84,8 +105,9 @@ export function Navbar() {
                     router.push(`/products?q=${encodeURIComponent(query)}`);
                   }
                 }}
-                className="flex items-center border border-line rounded-full px-3 py-1.5 bg-paper"
+                className="flex items-center border border-line rounded-full px-3 py-2 bg-paper hover:border-ink-soft transition-colors"
               >
+                <SearchIcon />
                 <input
                   name="q"
                   value={query}
@@ -96,8 +118,8 @@ export function Navbar() {
                   onFocus={() => {
                     if (query.trim()) setShowDropdown(true);
                   }}
-                  placeholder="Search"
-                  className="text-sm outline-none w-24 xs:w-32 sm:w-40 lg:w-48 bg-transparent"
+                  placeholder="Search the collection"
+                  className="text-sm outline-none w-20 xs:w-28 sm:w-36 lg:w-44 bg-transparent ml-2 placeholder:text-ink-soft/70"
                   aria-label="Search products"
                   autoComplete="off"
                 />
@@ -206,6 +228,15 @@ function BagIcon() {
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
       <path d="M6 8h12l1 13H5L6 8Z" strokeLinejoin="round" />
       <path d="M9 8V6a3 3 0 0 1 6 0v2" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+      <circle cx="11" cy="11" r="6.5" />
+      <path d="m16 16 4 4" strokeLinecap="round" />
     </svg>
   );
 }
