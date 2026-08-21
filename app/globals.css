@@ -5,12 +5,12 @@
      CTAs/sale (fast-fashion needs urgency), plus one accent per department. */
   --color-paper: #ffffff;
   --color-bone: #eeebe2;
-  --color-ink: #17140f;
+  --color-ink: #000000;
   --color-ink-soft: #514c42;
   --color-line: #ddd8cc;
 
-  --color-signal: #d2321e;   /* CTA / sale / price emphasis */
-  --color-signal-dark: #a8280f;
+  --color-signal: #6F0202;   /* CTA / sale / price emphasis */
+  --color-signal-dark: #4D0101;
   --color-denim: #2f4a66;    /* men */
   --color-clay: #a54b3f;     /* women */
   --color-moss: #445940;     /* kids */
