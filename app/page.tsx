@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getProducts } from "@/lib/products";
-import { ProductCard } from "@/components/ProductCard";
 import { ProductImage } from "@/components/ProductImage";
+import { ProductCarousel } from "@/components/ProductCarousel";
 
 export default function HomePage() {
   const bestsellers = getProducts({ sort: "bestseller" }).slice(0, 4);
@@ -81,13 +81,7 @@ export default function HomePage() {
               View all
             </Link>
           </div>
-          <div className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {bestsellers.map((p) => (
-              <div key={p.id} className="basis-[calc((100%-0.75rem)/2)] md:basis-[calc((100%-2.25rem)/4)] shrink-0 snap-start">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
+          <ProductCarousel id="bestsellers-products" products={bestsellers} />
         </section>
 
         <div className="tick-rule my-10 sm:my-14" />
@@ -101,13 +95,7 @@ export default function HomePage() {
               View all
             </Link>
           </div>
-          <div className="flex gap-3 sm:gap-4 overflow-x-auto snap-x snap-mandatory pb-4 -mx-4 px-4 sm:mx-0 sm:px-0">
-            {newIn.map((p) => (
-              <div key={p.id} className="basis-[calc((100%-0.75rem)/2)] md:basis-[calc((100%-2.25rem)/4)] shrink-0 snap-start">
-                <ProductCard product={p} />
-              </div>
-            ))}
-          </div>
+          <ProductCarousel id="new-products" products={newIn} />
         </section>
       </div>
     </div>
