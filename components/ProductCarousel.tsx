@@ -42,6 +42,35 @@ export function ProductCarousel({
 
   return (
     <div className="relative">
+      <div className="flex justify-end gap-2 mb-4">
+        <button
+          type="button"
+          onClick={() => move(-1)}
+          disabled={!canGoBack}
+          aria-label="Show previous products"
+          title="Previous products"
+          className="group flex size-11 items-center justify-center rounded-sm border border-line bg-paper text-ink shadow-xs transition-all hover:border-ink hover:bg-bone focus-visible:outline-2 focus-visible:outline-signal focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-35"
+        >
+          <span
+            aria-hidden
+            className="size-2.5 -translate-x-0.5 rotate-45 border-b-2 border-l-2 border-current transition-transform group-hover:-translate-x-1"
+          />
+        </button>
+        <button
+          type="button"
+          onClick={() => move(1)}
+          disabled={!canGoForward}
+          aria-label="Show more products"
+          title="More products"
+          className="group flex size-11 items-center justify-center rounded-sm border border-ink bg-ink text-paper shadow-xs transition-all hover:bg-signal hover:border-signal focus-visible:outline-2 focus-visible:outline-signal focus-visible:outline-offset-2 disabled:cursor-not-allowed disabled:opacity-35"
+        >
+          <span
+            aria-hidden
+            className="size-2.5 translate-x-0.5 rotate-45 border-t-2 border-r-2 border-current transition-transform group-hover:translate-x-1"
+          />
+        </button>
+      </div>
+
       <div
         ref={trackRef}
         id={id}
@@ -56,29 +85,6 @@ export function ProductCarousel({
             <ProductCard product={product} />
           </div>
         ))}
-      </div>
-
-      <div className="flex justify-end gap-2 mt-5">
-        <button
-          type="button"
-          onClick={() => move(-1)}
-          disabled={!canGoBack}
-          aria-label="Show previous products"
-          title="Previous products"
-          className="size-10 border border-ink rounded-full text-lg leading-none transition-colors hover:bg-ink hover:text-paper disabled:opacity-25 disabled:pointer-events-none"
-        >
-          <span aria-hidden>←</span>
-        </button>
-        <button
-          type="button"
-          onClick={() => move(1)}
-          disabled={!canGoForward}
-          aria-label="Show more products"
-          title="More products"
-          className="size-10 border border-ink rounded-full text-lg leading-none transition-colors hover:bg-ink hover:text-paper disabled:opacity-25 disabled:pointer-events-none"
-        >
-          <span aria-hidden>→</span>
-        </button>
       </div>
     </div>
   );
