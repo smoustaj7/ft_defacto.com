@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/auth";
 import { getOrdersByUserId, Order } from "@/lib/orders";
@@ -21,7 +22,14 @@ export default async function AccountPage() {
             Welcome back, {user.full_name} ({user.email})
           </p>
         </div>
-        <LogoutButton />
+        <div className="flex items-center gap-3">
+          {user.is_admin && (
+            <Link href="/admin" className="rounded-full border border-line px-4 py-2 text-sm font-medium hover:bg-bone transition-colors">
+              Admin panel
+            </Link>
+          )}
+          <LogoutButton />
+        </div>
       </div>
 
       <section>
