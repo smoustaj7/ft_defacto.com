@@ -7,6 +7,25 @@ export type ProductFilters = {
   q?: string;
 };
 
+export type ProductInput = {
+  name: string;
+  category: string;
+  subcategory: string;
+  price: number;
+  compare_at_price?: number | null;
+  description: string;
+  color_name: string;
+  color_hex: string;
+  image_url?: string;
+  sizes?: string[];
+  is_new?: boolean;
+  is_bestseller?: boolean;
+};
+
+export function getProductById(id: number): Product | undefined {
+  return db.prepare("SELECT * FROM products WHERE id = ?").get(id) as Product | undefined;
+}
+
 export function getProducts(filters: ProductFilters = {}): Product[] {
   const clauses: string[] = [];
   const params: Record<string, string> = {};
@@ -40,6 +59,83 @@ export function getProductBySlug(slug: string): Product | undefined {
   return db.prepare("SELECT * FROM products WHERE slug = ?").get(slug) as
     | Product
     | undefined;
+}
+
+function slugify(value: string) {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)/g, "") || "product";
+}
+
+function generateUniqueSlug(baseName: string, excludeId?: number) {
+  let slug = slugify(baseName);
+  let suffix = 2;
+
+  while (
+    db
+      .prepare(
+        excludeId
+          ? "SELECT id FROM products WHERE slug = ? AND id != ?"
+          : "SELECT id FROM products WHERE slug = ?"
+      )
+      .get(slug, excludeId ?? 0) as { id?: number } | undefined
+  ) {
+    slug = `${slugify(baseName)}-${suffix}`;
+    suffix += 1;
+  }
+
+  return slug;
+}
+
+export function createProduct(input: ProductInput): Product {
+  const normalizedName = input.name.trim();
+  const normalizedCategory = input.category.trim();
+  const normalizedSubcategory = input.subcategory.trim();
+
+  if (!normalizedName || !normalizedCategory || !normalizedSubcategory) {
+    throw new Error("Product name, category, and subcategory are required");
+  }
+
+  const sizeList = Array.isArray(input.sizes) && input.sizes.length > 0
+    ? input.sizes.map((size) => String(size).trim()).filter(Boolean)
+    : ["S", "M", "L"];
+
+  const result = db.prepare(`
+    INSERT INTO products (
+      slug, name, category, subcategory, price, compare_at_price,
+      description, color_name, color_hex, image_url, sizes,
+      is_new, is_bestseller
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `).run(
+    generateUniqueSlug(normalizedName),
+    normalizedName,
+    normalizedCategory,
+    normalizedSubcategory,
+    Number(input.price || 0),
+    input.compare_at_price ?? null,
+    input.description?.trim() || "A new addition to the Defacto collection.",
+    input.color_name?.trim() || "Neutral",
+    input.color_hex || "#EAE2D7",
+    input.image_url || `/products/${slugify(normalizedName)}.svg`,
+    JSON.stringify(sizeList),
+    input.is_new ? 1 : 0,
+    input.is_bestseller ? 1 : 0,
+  );
+
+  const created = getProductById(Number(result.lastInsertRowid));
+  if (!created) {
+    throw new Error("Unable to load created product");
+  }
+
+  return created;
+}
+
+export function deleteProduct(productId: number): boolean {
+  db.prepare("DELETE FROM cart_items WHERE product_id = ?").run(productId);
+  const result = db.prepare("DELETE FROM products WHERE id = ?").run(productId);
+  return result.changes > 0;
 }
 
 export function getSubcategories(category?: string): string[] {

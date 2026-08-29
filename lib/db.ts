@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS users (
   email TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
   oauth_provider TEXT DEFAULT NULL,
+  is_admin INTEGER NOT NULL DEFAULT 0,
   full_name TEXT NOT NULL,
   created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
@@ -148,6 +149,15 @@ function addOauthProviderColumnIfMissing() {
   }
 }
 
+function addAdminColumnIfMissing() {
+  const columns = db
+    .prepare("PRAGMA table_info(users)")
+    .all() as { name: string }[];
+  if (!columns.some((col) => col.name === "is_admin")) {
+    db.exec("ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0;");
+  }
+}
+
 function populateImageUrls() {
   const rows = db
     .prepare("SELECT id, slug, image_url FROM products")
@@ -168,6 +178,7 @@ function populateImageUrls() {
 
 addImageUrlColumnIfMissing();
 addOauthProviderColumnIfMissing();
+addAdminColumnIfMissing();
 populateImageUrls();
 
 seedIfEmpty();

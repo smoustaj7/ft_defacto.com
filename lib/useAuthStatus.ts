@@ -3,15 +3,18 @@
 import { useEffect, useState } from "react";
 
 export function useAuthStatus() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [status, setStatus] = useState({ loggedIn: false, isAdmin: false });
 
   const refresh = async () => {
     try {
       const res = await fetch("/api/auth/me", { cache: "no-store" });
       const data = await res.json();
-      setLoggedIn(data.loggedIn);
+      setStatus({
+        loggedIn: !!data.loggedIn,
+        isAdmin: !!data.user?.is_admin,
+      });
     } catch {
-      setLoggedIn(false);
+      setStatus({ loggedIn: false, isAdmin: false });
     }
   };
 
@@ -21,7 +24,7 @@ export function useAuthStatus() {
     return () => window.removeEventListener("auth:changed", refresh);
   }, []);
 
-  return loggedIn;
+  return status;
 }
 
 export function notifyAuthChanged() {
