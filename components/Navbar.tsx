@@ -16,7 +16,7 @@ const CATEGORIES = [
 
 export function Navbar() {
   const count = useCartCount();
-  const loggedIn = useAuthStatus();
+  const { loggedIn, isAdmin } = useAuthStatus();
   const router = useRouter();
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<{ products: any[]; categories: any[] } | null>(null);
@@ -179,6 +179,14 @@ export function Navbar() {
                 </div>
               )}
             </div>
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className="hidden sm:inline-flex items-center justify-center rounded-full border border-line px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.18em] hover:bg-bone transition-colors"
+              >
+                Admin
+              </Link>
+            )}
             <Link
               href={loggedIn ? "/account" : "/login"}
               className="flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full hover:bg-bone transition-colors"
