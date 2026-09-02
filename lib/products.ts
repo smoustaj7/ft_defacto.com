@@ -73,15 +73,16 @@ function generateUniqueSlug(baseName: string, excludeId?: number) {
   let slug = slugify(baseName);
   let suffix = 2;
 
-  while (
-    db
-      .prepare(
-        excludeId
-          ? "SELECT id FROM products WHERE slug = ? AND id != ?"
-          : "SELECT id FROM products WHERE slug = ?"
-      )
-      .get(slug, excludeId ?? 0) as { id?: number } | undefined
-  ) {
+  while (true) {
+    const existing = excludeId
+      ? db
+          .prepare("SELECT id FROM products WHERE slug = ? AND id != ?")
+          .get(slug, excludeId) as { id?: number } | undefined
+      : db
+          .prepare("SELECT id FROM products WHERE slug = ?")
+          .get(slug) as { id?: number } | undefined;
+
+    if (!existing) break;
     slug = `${slugify(baseName)}-${suffix}`;
     suffix += 1;
   }
