@@ -38,7 +38,7 @@ export default function NewProductPage() {
       is_bestseller: !!form.is_bestseller,
     };
 
-    const res = await fetch("/api/admin/products", {
+    const res = await fetch("app/api/admin/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),

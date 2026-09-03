@@ -66,7 +66,7 @@ export default async function AdminPage() {
                 <Link href={`/products/${product.slug}`} className="rounded-full border border-line px-3 py-1.5 text-sm hover:bg-bone transition-colors">
                   Preview
                 </Link>
-                <form action="/api/admin/products" method="post">
+                <form action="app/api/admin/products" method="post">
                   <input type="hidden" name="_method" value="delete" />
                   <input type="hidden" name="productId" value={String(product.id)} />
                   <button
